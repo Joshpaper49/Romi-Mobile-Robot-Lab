@@ -5,19 +5,27 @@ Romi32U4Motors motors;
 
 void setup()
 {
+  Serial.begin(9600);
   // Give us time after startup before anything moves.
   delay(2000);
 
   // Run both motors forward.
   motors.setSpeeds(100, 100);
 
+
+
   // Run for one second.
   delay(1000);
 
   // Stop both motors.
   motors.setSpeeds(0, 0);
+  
 }
 
 void loop()
 {
+
+delay(2000);
+  Serial.println("We are here!!");
+
 }

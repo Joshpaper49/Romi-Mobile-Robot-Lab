@@ -3,6 +3,12 @@
 
 Romi32U4Motors motors;
 
+void delayFunc(int);
+void stopFunc();
+void forwardFunc();
+void reverseFunc();
+void indepFunc();
+
 void setup()
 {
   Serial.begin(9600);
@@ -25,7 +31,31 @@ void setup()
 void loop()
 {
 
-delay(2000);
-  Serial.println("We are here!!");
 
+  motors.setSpeeds(0,0);
 }
+
+
+void stopFunc() {
+  motors.setSpeeds(0,0);
+};
+
+void forwardFunc() {
+  motors.setSpeeds(250, 250);
+};
+
+void reverseFunc() {
+  motors.setSpeeds(-250, -250);  
+};
+
+void indepFunc() {
+  //drifting to the left
+  motors.setSpeeds(100, 200);
+
+    //drifting to the right
+  motors.setSpeeds(200, 100);
+};
+
+void delayFunc(int input) {
+  delay(input * 1000);
+};

@@ -7,32 +7,48 @@ void delayFunc(int);
 void stopFunc();
 void forwardFunc();
 void reverseFunc();
-void indepFunc();
+void indepFunc(bool left);
+void rotateFunc();
 
 void setup()
 {
   Serial.begin(9600);
-  // Give us time after startup before anything moves.
-  delay(2000);
-
-  // Run both motors forward.
-  motors.setSpeeds(100, 100);
-
-
-
-  // Run for one second.
-  delay(1000);
-
-  // Stop both motors.
-  motors.setSpeeds(0, 0);
-  
 }
 
 void loop()
 {
 
+  //forward section
+  forwardFunc();
+  delayFunc(5);
+  stopFunc();
 
-  motors.setSpeeds(0,0);
+  //reverse section
+  reverseFunc();
+  delayFunc(5);
+  stopFunc();
+
+  //forward section
+  forwardFunc();
+  delayFunc(5);
+  stopFunc();
+
+  //left forward section
+  indepFunc(true);
+  delayFunc(5);
+  stopFunc();
+
+  //right forward section
+  indepFunc(false);
+  delayFunc(5);
+  stopFunc();
+
+  //rotate section
+  rotateFunc();
+  delayFunc(5);
+  stopFunc();
+
+  delayFunc(7);
 }
 
 
@@ -48,14 +64,14 @@ void reverseFunc() {
   motors.setSpeeds(-250, -250);  
 };
 
-void indepFunc() {
-  //drifting to the left
-  motors.setSpeeds(100, 200);
-
-    //drifting to the right
-  motors.setSpeeds(200, 100);
+void indepFunc(bool left) {
+    left ? motors.setSpeeds(100, 200) : motors.setSpeeds(200, 100);
 };
 
 void delayFunc(int input) {
   delay(input * 1000);
+};
+
+void rotateFunc() {
+  motors.setSpeeds(100, -100);
 };

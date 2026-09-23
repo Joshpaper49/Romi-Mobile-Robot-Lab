@@ -28,11 +28,6 @@ void loop()
   delayFunc(5);
   stopFunc();
 
-  //forward section
-  forwardFunc();
-  delayFunc(5);
-  stopFunc();
-
   //left forward section
   indepFunc(true);
   delayFunc(5);

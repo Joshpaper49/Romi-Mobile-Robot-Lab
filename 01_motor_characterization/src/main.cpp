@@ -1,72 +1,55 @@
 #include <Arduino.h>
 #include <Romi32U4.h>
 
-Romi32U4Motors motors;
 
-void delayFunc(int);
-void stopFunc();
-void forwardFunc();
-void reverseFunc();
-void indepFunc(bool left);
-void rotateFunc();
+Romi32U4Motors motors;
+Romi32U4Encoders encoders;
+
+unsigned long time{0};
+
+  struct countPair {
+    int16_t right_count;
+    int16_t left_count;
+    int effort;
+  };
+
+
 
 void setup()
 {
+
   Serial.begin(9600);
+
+
+
+
 }
+
+
 
 void loop()
 {
 
-  //forward section
-  forwardFunc();
-  delayFunc(5);
-  stopFunc();
+  countPair pairs[5] = {0};
+  
+  countPair my_count = {0,0, 12};
 
-  //reverse section
-  reverseFunc();
-  delayFunc(5);
-  stopFunc();
+  
+  Serial.print("Time: ");
+  time = millis();
 
-  //left forward section
-  indepFunc(true);
-  delayFunc(5);
-  stopFunc();
+  int16_t left_count = encoders.getCountsLeft();
+  int16_t right_count = encoders.getCountsRight();
 
-  //right forward section
-  indepFunc(false);
-  delayFunc(5);
-  stopFunc();
+  delay(100);
 
-  //rotate section
-  rotateFunc();
-  delayFunc(5);
-  stopFunc();
+  for(int i {0}; i < (sizeof(pairs)/sizeof(pairs[0]))+1; i++) {
+    unsigned long current_time = millis();
+  }
 
-  delayFunc(7);
+
+  
+
 }
 
 
-void stopFunc() {
-  motors.setSpeeds(0,0);
-};
-
-void forwardFunc() {
-  motors.setSpeeds(250, 250);
-};
-
-void reverseFunc() {
-  motors.setSpeeds(-250, -250);  
-};
-
-void indepFunc(bool left) {
-    left ? motors.setSpeeds(100, 200) : motors.setSpeeds(200, 100);
-};
-
-void delayFunc(int input) {
-  delay(input * 1000);
-};
-
-void rotateFunc() {
-  motors.setSpeeds(100, -100);
-};

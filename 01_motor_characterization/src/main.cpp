@@ -1,74 +1,72 @@
 #include <Arduino.h>
 #include <Romi32U4.h>
 
-
 Romi32U4Motors motors;
 Romi32U4Encoders encoders;
 
-  struct countPair {
-    int16_t right_count;
-    int16_t left_count;
-    int effort;
-  };
+struct countPair
+{
+  int16_t right_count;
+  int16_t left_count;
+  int effort;
+};
 
-  bool loopDone {false};
-  countPair pairs[5] = {0};
-  int effort_array[5] = {20, 40, 60, 80, 100};
-
-
+bool loopDone{false};
+countPair pairs[5] = {0};
+int effort_array[5] = {20, 40, 60, 80, 100};
 
 void setup()
 {
 
   Serial.begin(9600);
-
 }
-
-
 
 void loop()
 {
 
+  while (!loopDone)
+  {
 
-  while(!loopDone) {
+    for (size_t i{0}; i < (sizeof(pairs) / sizeof(pairs[0])); i++)
+    {
 
-  for(int i {0}; i < (sizeof(pairs)/sizeof(pairs[0])); i++) {
-    unsigned long current_time = millis();
+      encoders.getCountsAndResetLeft();
+      encoders.getCountsAndResetRight();
 
-    motors.setSpeeds(effort_array[i], effort_array[i]);
+      unsigned long current_time = millis();
 
-    while (((millis() - current_time)/1000) < 10) {}
+      motors.setSpeeds(effort_array[i], effort_array[i]);
 
-    countPair current_pair = {encoders.getCountsRight(), encoders.getCountsLeft(), effort_array[i]}; 
+      while (((millis() - current_time) / 1000) < 10)
+      {
+      }
 
-    current_time = millis();
-    motors.setSpeeds(0, 0);
+      motors.setSpeeds(0, 0);
 
-    while (((millis() - current_time)/1000) < 5) {}
-    encoders.getCountsAndResetLeft();
-    encoders.getCountsAndResetRight();
+      countPair current_pair = {encoders.getCountsRight(), encoders.getCountsLeft(), effort_array[i]};
 
-    pairs[i] = current_pair;
+      current_time = millis();
+
+      while (((millis() - current_time) / 1000) < 5)
+      {
+      }
+
+      pairs[i] = current_pair;
+    }
+
+    loopDone = true;
+
+    Serial.println("Left Count  || Right Count || Effort ");
+    for (const auto &value : pairs)
+    {
+
+      Serial.print(value.left_count);
+      Serial.print(" ");
+      Serial.print(value.right_count);
+      Serial.print(" ");
+      Serial.print(value.effort);
+
+      Serial.println("");
+    }
   }
-
-  loopDone = true;
-
-
-  Serial.println("Left Count  || Right Count || Effort ");
-  for(const auto &value: pairs) {
-
-  Serial.print(value.left_count);
-  Serial.print(" ");
-  Serial.print(value.right_count);
-  Serial.print(" ");
-  Serial.print(value.effort);
-
 }
-
-
-}
-
-
-}
-
-

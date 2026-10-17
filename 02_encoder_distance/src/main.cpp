@@ -45,6 +45,12 @@ void loop()
   Serial.print(right_distance);
   Serial.println(" cm");
 
+  double central_travel_distance = (right_distance + left_distance)/2.0;
+
+  Serial.print("Center distance: ");
+  Serial.print(central_travel_distance);
+  Serial.println(" cm");
+
   delay(10000);
 
 }

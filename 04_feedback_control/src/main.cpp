@@ -28,10 +28,10 @@ struct motor_effort
 
 destData move_array[4]{
     // linear_distance, degree
-    {10, 45},
-    {-10, -45},
-    {10, 45},
-    {-10, -45}};
+    {0, 90},
+    {0, -90},
+    {0, 90},
+    {0, -90}};
 
 odomInfo odomCalc();
 motor_effort effortCalc(odomInfo data, destData destination);
